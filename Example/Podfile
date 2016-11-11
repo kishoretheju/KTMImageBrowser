@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'KTMImageBrowser_Example' do
+  pod 'KTMImageBrowser', :path => '../'
+
+  target 'KTMImageBrowser_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

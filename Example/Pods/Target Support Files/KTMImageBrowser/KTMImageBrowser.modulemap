@@ -1,0 +1,6 @@
+framework module KTMImageBrowser {
+  umbrella header "KTMImageBrowser-umbrella.h"
+
+  export *
+  module * { export * }
+}

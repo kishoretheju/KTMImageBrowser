@@ -29,20 +29,13 @@
 
 - (IBAction)showImageBrowser:(id)sender
 {
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"ImageBrowser" bundle:[NSBundle bundleForClass:[KTMImageBrowserViewController class]]];
-    KTMImageBrowserViewController *vc = [sb instantiateViewControllerWithIdentifier:@"KTMImageBrowserViewController"];
-    
+    KTMImageBrowserViewController *vc = [KTMImageBrowserViewController imageBrowserViewController];
     vc.largeImageUrls = @[@"https://cdn.pixabay.com/photo/2013/02/05/18/29/robin-78092_960_720.jpg",
                           @"https://cdn.pixabay.com/photo/2016/05/17/14/47/redbreast-1398230_960_720.jpg",
                           @"https://cdn.pixabay.com/photo/2016/05/17/14/48/bird-1398239_960_720.jpg"];
     vc.thumbnailImageUrls = @[@"https://cdn.pixabay.com/photo/2013/02/05/18/29/robin-78092__180.jpg",
                               @"https://cdn.pixabay.com/photo/2016/05/17/14/47/redbreast-1398230__180.jpg",
                               @"https://cdn.pixabay.com/photo/2016/05/17/14/48/bird-1398239__180.jpg"];
-    
-    
-    
-//    vc.largeImageNames = @[@"image_first", @"image_second", @"image_third", @"image_fourth"];
-//    vc.thumbnailImageNames = @[@"image_first", @"image_second", @"image_third", @"image_fourth"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

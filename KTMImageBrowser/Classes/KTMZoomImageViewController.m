@@ -39,7 +39,6 @@
     if (self.initializeViews)
     {
         self.initializeViews = NO;
-        self.scrollView.delegate = self;
         
         if (self.pageIndex%2 == 0)
             self.view.backgroundColor = [UIColor blueColor];
@@ -49,14 +48,17 @@
         self.scrollView.backgroundColor = [UIColor whiteColor];
         self.imageView.backgroundColor = [UIColor magentaColor];
         
-        if (self.imageName)
+        if (self.largeImageName)
         {
-            self.imageView.image = [UIImage imageNamed:self.imageName];
+            self.imageView.image = [UIImage imageNamed:self.largeImageName];
+            self.scrollView.delegate = self;
         }
-        else if (self.imageUrl)
+        else if (self.largeImageUrl)
         {
-            [self loadImageWithUrl:self.imageUrl];
+            [self loadImageWithUrl:self.largeImageUrl];
         }
+        
+        [self addTapToZoomGestures];
     }
 }
 
@@ -70,6 +72,9 @@
     [self.imageView setImageWithURLRequest:request
                           placeholderImage:[UIImage imageNamed:@"placeholder"]
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                       
+                                       self.scrollView.delegate = self;
+                                       
                                        _self.imageView.image = image;
                                        [_self.imageView setNeedsLayout];
                                        [_self.imageView layoutIfNeeded];
@@ -90,6 +95,7 @@
     CGFloat minScale = MIN(widthScale, heightScale);
     
     self.scrollView.minimumZoomScale = minScale;
+    self.scrollView.maximumZoomScale = 5.0;
     self.scrollView.zoomScale = minScale;
 }
 
@@ -117,6 +123,62 @@
     [self updateConstraintsForSize:self.view.bounds.size];
 }
 
+#pragma mark - Tap to Zoom
+- (void)addTapToZoomGestures
+{
+    UITapGestureRecognizer *dblRecognizer;
+    dblRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(handleDoubleTapFrom:)];
+    [dblRecognizer setNumberOfTapsRequired:2];
+    [self.scrollView addGestureRecognizer:dblRecognizer];
+    
+    UITapGestureRecognizer *recognizer;
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                         action:@selector(handleTapFrom:)];
+    [recognizer requireGestureRecognizerToFail:dblRecognizer];
+    
+    [self.scrollView addGestureRecognizer:recognizer];
+}
+
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center
+{
+    CGRect zoomRect;
+    
+    zoomRect.size.height = [_imageView frame].size.height / scale;
+    zoomRect.size.width  = [_imageView frame].size.width  / scale;
+    
+    center = [_imageView convertPoint:center fromView:self];
+    
+    zoomRect.origin.x    = center.x - ((zoomRect.size.width / 2.0));
+    zoomRect.origin.y    = center.y - ((zoomRect.size.height / 2.0));
+    
+    return zoomRect;
+}
+
+- (void)handleTapFrom:(UITapGestureRecognizer *)recognizer
+{
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale)
+    {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+    }
+}
+
+- (void)handleDoubleTapFrom:(UITapGestureRecognizer *)recognizer
+{
+    float newScale = self.scrollView.zoomScale * 4.0;
+    
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale)
+    {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+    }
+    else
+    {
+        CGRect zoomRect = [self zoomRectForScale:newScale
+                                      withCenter:[recognizer locationInView:recognizer.view]];
+        [self.scrollView zoomToRect:zoomRect animated:YES];
+    }
+}
+
 #pragma mark - Memory warning
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -125,20 +187,5 @@
     self.imageView.image = nil;
     self.view = nil;
 }
-
-//- (void)dealloc
-//{
-//    NSLog(@"Dealloc called KTMZoomImageViewController.");
-//}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -15,7 +15,6 @@
 		23EFB184AD12FB1014FFC765CE0D710A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D39D513DA3519FA56B3F9657B9F9990 /* Security.framework */; };
 		29476636EA86BEFC4CB833D3BB7A52D7 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B66C0AEBC9F9724A670DCF79BE4531 /* AFURLRequestSerialization.m */; };
 		2B0705CC26A4CBEE32A5A60284AED35B /* UIButton+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = A39107EEA293C692022DBFA34617CFB0 /* UIButton+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		31C09BF01DD84158005EF074 /* ImageBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B55DE9B72DC39793E6ADB2D970ACB36 /* ImageBrowser.storyboard */; };
 		31C09BF11DD84170005EF074 /* KTMThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D8A71145501A9A6CE68598D1F089A8 /* KTMThumbnailCollectionViewCell.xib */; };
 		32076D3DD644045CF79DFFEBB6BFF3F2 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 907EBD05C24D3EC8D81F3A5FEE84121C /* UIButton+AFNetworking.m */; };
 		3319441CD82C6A95A2E8E03099844E0E /* Pods-KTMImageBrowser_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D68A7E37A3AFB486AADD278A18E4966D /* Pods-KTMImageBrowser_Tests-dummy.m */; };
@@ -704,7 +703,6 @@
 			files = (
 				31C09BF11DD84170005EF074 /* KTMThumbnailCollectionViewCell.xib in Resources */,
 				C58D502A75CC1FD902116E9C77BB9510 /* KTMImageBrowser.bundle in Resources */,
-				31C09BF01DD84158005EF074 /* ImageBrowser.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

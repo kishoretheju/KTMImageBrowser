@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *thumbnailContainerLeading;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *thumbnailCollectionView;
+@property (weak, nonatomic) IBOutlet UIView *thumbnailsBackgroundView;
+
 
 @property (weak, nonatomic) KTMPageViewController *pageVC;
 
@@ -33,13 +35,44 @@
 
 @implementation KTMImageBrowserViewController
 
++ (nullable instancetype)imageBrowserViewController
+{
+    NSBundle *bundle = [self bundleOfThisPod];
+    if (bundle)
+    {
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"ImageBrowser" bundle:bundle];
+        KTMImageBrowserViewController *vc = [sb instantiateViewControllerWithIdentifier:@"KTMImageBrowserViewController"];
+        return vc;
+    }
+    else
+    {
+        NSAssert(NO, @"KTMImageBrowser bundle missing, could not load KTMImageBrowserViewController");
+    }
+    
+    return nil;
+}
+
++ (NSBundle *)bundleOfThisPod
+{
+    NSBundle *podBundle = [NSBundle bundleForClass:[KTMImageBrowserViewController class]];
+    NSURL *bundleUrl = [podBundle URLForResource:@"KTMImageBrowser" withExtension:@"bundle"];
+    
+    if (bundleUrl)
+    {
+        NSBundle *bundle = [NSBundle bundleWithURL:bundleUrl];
+        return bundle;
+    }
+    
+    return nil;
+}
+
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self)
     {
-        
+        [self initializeToDefaults];
     }
     
     return self;
@@ -51,10 +84,18 @@
     
     if (self)
     {
-        
+        [self initializeToDefaults];
     }
     
     return self;
+}
+
+- (void)initializeToDefaults
+{
+    self.selectedIndex = 0;
+    self.needThumbnails = YES;
+    self.thumbnailBackground = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+    self.needThumbnailBorder = YES;
 }
 
 - (void)viewDidLoad
@@ -65,6 +106,7 @@
     self.loadViews = YES;
     
     [self.thumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionOld context:NULL];
+    self.thumbnailsBackgroundView.backgroundColor = self.thumbnailBackground;
 }
 
 - (void)dealloc
@@ -81,13 +123,14 @@
         self.loadViews = NO;
         
         [self initializeFlags];
+        [self validateData];
         [self renderView];
         
         /**
          *  Show thumbnail images only if data is available for them,
          *  this is done by setting height of thumb nails container to 0.
          */
-        self.thumbnailContainerHeight.constant = self.hasThumbNailImages?100:0;
+        self.thumbnailContainerHeight.constant = self.hasThumbNailImages&&self.needThumbnails?100:0;
         [self.view layoutIfNeeded];
     }
 }
@@ -127,8 +170,41 @@
     }
 }
 
+- (void)validateData
+{
+    if (self.shouldLoadThumbNailsFromUrls)
+    {
+        if (self.needThumbnails && [self.thumbnailImageUrls count] != [self.largeImageUrls count])
+        {
+            NSAssert(NO, @"Count of thumbnailImageUrls and largeImageUrls should be same.");
+        }
+    }
+    else
+    {
+        if (self.needThumbnails && [self.thumbnailImageNames count] != [self.largeImageNames count])
+        {
+            NSAssert(NO, @"Count of thumbnailImageNames and largeImageNames should be same.");
+        }
+    }
+}
+
 - (void)renderView
 {
+    if (self.shouldLoadLargeImagesFromUrls)
+    {
+        if (self.selectedIndex >= [self.largeImageUrls count])
+        {
+            self.selectedIndex = [self.largeImageUrls count] - 1;
+        }
+    }
+    else
+    {
+        if (self.selectedIndex >= [self.largeImageNames count])
+        {
+            self.selectedIndex = [self.largeImageNames count] - 1;
+        }
+    }
+    
     [self initializePageVC];
     
     if (self.hasThumbNailImages)
@@ -137,7 +213,7 @@
 
 - (void)initializePageVC
 {
-    [self setViewControllersOfPageVcForIndex:0 withAnimation:NO andDirection:UIPageViewControllerNavigationDirectionForward];
+    [self setViewControllersOfPageVcForIndex:self.selectedIndex withAnimation:NO andDirection:UIPageViewControllerNavigationDirectionForward];
     self.pageVC.dataSource = self;
     self.pageVC.delegate = self;
 }
@@ -183,25 +259,14 @@
 #pragma mark - UIPageViewControllerDelegate
 - (void)initializeCollectionView
 {
-    NSBundle *podBundle = [NSBundle bundleForClass:[KTMImageBrowserViewController class]];
-    NSURL *bundleUrl = [podBundle URLForResource:@"KTMImageBrowser" withExtension:@"bundle"];
-    
-    if (bundleUrl)
+    NSBundle *bundle = [KTMImageBrowserViewController bundleOfThisPod];
+    if (bundle)
     {
-        NSBundle *bundle = [NSBundle bundleWithURL:bundleUrl];
-        if (bundle)
-        {
-            UINib *cellNib = [UINib nibWithNibName:@"KTMThumbnailCollectionViewCell" bundle:bundle];
-            
-            [self.thumbnailCollectionView registerNib:cellNib forCellWithReuseIdentifier:@"thumbnailIdentifier"];
-            self.thumbnailCollectionView.dataSource = self;
-            self.thumbnailCollectionView.delegate = self;
-        }
-        else
-        {
-            NSAssert(NO, @"KTMImageBrowser bundle missing, could not load KTMThumbnailCollectionViewCell.xib");
-        }
+        UINib *cellNib = [UINib nibWithNibName:@"KTMThumbnailCollectionViewCell" bundle:bundle];
         
+        [self.thumbnailCollectionView registerNib:cellNib forCellWithReuseIdentifier:@"thumbnailIdentifier"];
+        self.thumbnailCollectionView.dataSource = self;
+        self.thumbnailCollectionView.delegate = self;
     }
     else
     {
@@ -231,6 +296,11 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     KTMThumbnailCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailIdentifier" forIndexPath:indexPath];
+    cell.needBorder = self.needThumbnailBorder;
+    if (self.selectedThumbnailBorderColor)
+        cell.selectedThumbnailBorderColor = self.selectedThumbnailBorderColor;
+    if (self.normalThumbnailBorderColor)
+        cell.normalThumbnailBorderColor = self.normalThumbnailBorderColor;
     cell.isSelected = self.selectedIndex == indexPath.row;
     
     if (self.shouldLoadThumbNailsFromUrls)
@@ -269,10 +339,10 @@
     if (self.shouldLoadThumbNailsFromUrls)
     {
         NSURL *imageUrlString = [self.largeImageUrls objectAtIndex:index];
-        vc.imageUrl = [[NSURL alloc] initWithString:imageUrlString];
+        vc.largeImageUrl = [[NSURL alloc] initWithString:imageUrlString];
     }
     else
-        vc.imageName = [self.largeImageNames objectAtIndex:index];
+        vc.largeImageName = [self.largeImageNames objectAtIndex:index];
     
     CGRect frame = vc.view.frame;
     frame.size.width = self.pageVC.view.frame.size.width;

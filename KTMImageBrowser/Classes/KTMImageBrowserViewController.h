@@ -14,31 +14,58 @@
 /**
  *  Specify image names for large images here.
  */
-@property (strong, nonatomic) NSArray *largeImageNames;
+@property (nullable, strong, nonatomic) NSArray<NSString *> *largeImageNames;
+
 /**
  *  Specify image names for thumbnail images here.
  */
-@property (strong, nonatomic) NSArray *thumbnailImageNames;
+@property (nullable, strong, nonatomic) NSArray<NSString *> *thumbnailImageNames;
 
 /**
  *  Specify image urls for large images here.
  */
-@property (strong, nonatomic) NSArray *largeImageUrls;
+@property (nullable, strong, nonatomic) NSArray<NSString *> *largeImageUrls;
+
 /**
  *  Specify image urls for thumbnail images here.
  */
-@property (strong, nonatomic) NSArray *thumbnailImageUrls;
+@property (nullable, strong, nonatomic) NSArray<NSString *> *thumbnailImageUrls;
 
+/**
+ *  Image to be selected.
+ */
 @property (assign, nonatomic) NSUInteger selectedIndex;
 
 #pragma mark - Customization
 /**
- *  Height of thumbnails container view, pass zero if thumbnails not needed.
+ *  To show/hide thumbnails view.
  */
-@property (assign, nonatomic) CGFloat thumbnailHeight;
+@property (assign, nonatomic) BOOL needThumbnails;
+
 /**
  *  Background of thumbnails container view.
  */
-@property (strong, nonatomic) UIColor *thumbnailBackground;
+@property (nullable, strong, nonatomic) UIColor *thumbnailBackground;
+
+/**
+ *  If YES border will be given to thumbnail cell, this will be YES by default.
+ */
+@property (assign, nonatomic) BOOL needThumbnailBorder;
+
+/**
+ *  Border color for selected thumbnail.
+ */
+@property (nullable, strong, nonatomic) UIColor *selectedThumbnailBorderColor;
+
+/**
+ *  Border color of normal(all unselected) thumnail.
+ */
+@property (nullable, strong, nonatomic) UIColor *normalThumbnailBorderColor;
+
+/**
+ *  Use this utility function to create an instance of KTMImageBrowserViewController *.
+ *  @return Instance of KTMImageBrowserViewController *.
+ */
++ (nullable instancetype)imageBrowserViewController;
 
 @end

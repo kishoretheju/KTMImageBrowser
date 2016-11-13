@@ -13,7 +13,14 @@
 @property (assign, nonatomic) NSUInteger pageIndex;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
-@property (strong, nonatomic) NSString *imageName;
-@property (strong, nonatomic) NSURL *imageUrl;
+/**
+ *  Local image name.
+ */
+@property (strong, nonatomic) NSString *largeImageName;
+
+/**
+ *  URL of image.
+ */
+@property (strong, nonatomic) NSURL *largeImageUrl;
 
 @end

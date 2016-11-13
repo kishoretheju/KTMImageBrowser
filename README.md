@@ -1,9 +1,8 @@
 # KTMImageBrowser
 
-[![CI Status](http://img.shields.io/travis/Kishore Thejasvi/KTMImageBrowser.svg?style=flat)](https://travis-ci.org/Kishore Thejasvi/KTMImageBrowser)
-[![Version](https://img.shields.io/cocoapods/v/KTMImageBrowser.svg?style=flat)](http://cocoapods.org/pods/KTMImageBrowser)
-[![License](https://img.shields.io/cocoapods/l/KTMImageBrowser.svg?style=flat)](http://cocoapods.org/pods/KTMImageBrowser)
-[![Platform](https://img.shields.io/cocoapods/p/KTMImageBrowser.svg?style=flat)](http://cocoapods.org/pods/KTMImageBrowser)
+<p>To show multiple large images as pages along with thumbnails. Each large image can be zoomed in/out. Can be used as a image browser.</p>
+
+![](https://media.giphy.com/media/l2Jhx6PKAL7GxhTj2/giphy.gif)
 
 ## Example
 

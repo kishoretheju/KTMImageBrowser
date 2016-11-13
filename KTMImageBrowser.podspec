@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KTMImageBrowser'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'To show multiple large images as pages along with thumbnails. Each large image can be zoomed in/out.'
   s.description      = <<-DESC
 To show multiple large images as pages along with thumbnails. Each large image can be zoomed in/out. Can be used as a image browser.
@@ -21,7 +21,7 @@ To show multiple large images as pages along with thumbnails. Each large image c
   s.source           = { :git => 'https://github.com/kishoretheju/KTMImageBrowser.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/kishore_munna'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '7.0'
 
   s.source_files = 'KTMImageBrowser/Classes/**/*'
   

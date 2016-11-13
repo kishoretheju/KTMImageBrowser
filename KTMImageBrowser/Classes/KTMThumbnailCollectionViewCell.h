@@ -13,4 +13,19 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (assign, nonatomic) BOOL isSelected;
 
+/**
+ *  Border color for selected thumbnail.
+ */
+@property (nullable, strong, nonatomic) UIColor *selectedThumbnailBorderColor;
+
+/**
+ *  Border color of normal(all unselected) thumnail.
+ */
+@property (nullable, strong, nonatomic) UIColor *normalThumbnailBorderColor;
+
+/**
+ *  If YES border will be given to thumbnail cell, this will be YES by default.
+ */
+@property (assign, nonatomic) BOOL needBorder;
+
 @end

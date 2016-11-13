@@ -29,7 +29,7 @@
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9Io-ZE-T8M">
                                 <rect key="frame" x="0.0" y="500" width="600" height="100"/>
-                                <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="eBB-Vt-iO4"/>
                                 </constraints>
@@ -73,6 +73,7 @@
                         <outlet property="thumbnailContainerHeight" destination="eBB-Vt-iO4" id="UgQ-7d-6j4"/>
                         <outlet property="thumbnailContainerLeading" destination="0qb-6S-768" id="S7K-FJ-xD5"/>
                         <outlet property="thumbnailContainerTrailing" destination="gH4-tC-NBa" id="Ssj-pD-18R"/>
+                        <outlet property="thumbnailsBackgroundView" destination="MOk-2v-vHB" id="SGl-XA-P6n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kTr-S8-mz9" userLabel="First Responder" sceneMemberID="firstResponder"/>

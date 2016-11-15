@@ -40,14 +40,6 @@
     {
         self.initializeViews = NO;
         
-        if (self.pageIndex%2 == 0)
-            self.view.backgroundColor = [UIColor blueColor];
-        else
-            self.view.backgroundColor = [UIColor grayColor];
-        
-        self.scrollView.backgroundColor = [UIColor whiteColor];
-        self.imageView.backgroundColor = [UIColor magentaColor];
-        
         if (self.largeImageName)
         {
             self.imageView.image = [UIImage imageNamed:self.largeImageName];

@@ -66,6 +66,6 @@
  *  Use this utility function to create an instance of KTMImageBrowserViewController *.
  *  @return Instance of KTMImageBrowserViewController *.
  */
-+ (nullable instancetype)imageBrowserViewController;
++ (nullable instancetype)browserView;
 
 @end

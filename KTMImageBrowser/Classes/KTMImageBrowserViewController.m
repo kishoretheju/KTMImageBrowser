@@ -35,7 +35,7 @@
 
 @implementation KTMImageBrowserViewController
 
-+ (nullable instancetype)imageBrowserViewController
++ (nullable instancetype)browserView
 {
     NSBundle *bundle = [self bundleOfThisPod];
     if (bundle)
